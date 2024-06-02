@@ -1,13 +1,15 @@
-import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs/server";
+
 import { redirect } from "next/navigation";
+import prismadb from "@/lib/prismadb";
 
 
 
 export default async function SetupLayout({
-    children
+    children,
+    params
 }: {
     children: React.ReactNode;
+    params: { storeId: string }
 }) {
     const { userId } = auth();
 
@@ -17,11 +19,12 @@ export default async function SetupLayout({
 
     const store = await prismadb.store.findFirst({
         where: {
+            id: params.storeId,
             userId
         }
     });
 
-    if (store) {
+    if (!store) {
         redirect(`/${store.id}`)
     }
 
