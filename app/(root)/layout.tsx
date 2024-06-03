@@ -1,6 +1,7 @@
 
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
+import Navbar from "@/components/navbar";
 
 
 
@@ -9,7 +10,7 @@ export default async function SetupLayout({
     params
 }: {
     children: React.ReactNode;
-    params: { storeId: string }
+    params: { storeId: string },
 }) {
     const { userId } = auth();
 
@@ -25,11 +26,13 @@ export default async function SetupLayout({
     });
 
     if (!store) {
-        redirect(`/${store.id}`)
+        // redirect(`/${store.id}`)
+        redirect('/')
     }
 
     return (
         <>
+        <Navbar />
             {children}
         </>
     )
